@@ -1,85 +1,209 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Light Theme Palette */
-  --bg:        #F5F7F2;
-  --bg2:       #ECEEE9;
-  --white:     #FFFFFF;
-  --card:      #FFFFFF;
-  --surface:   #F0F3ED;
-  --border:    #D8E0D2;
-  --border2:   #C5D1BC;
+  --glass:      rgba(255,255,255,0.11);
+  --glass-h:    rgba(255,255,255,0.20);
+  --gb:         1px solid rgba(255,255,255,0.26);
+  --gb-s:       1px solid rgba(255,255,255,0.12);
 
-  /* Brand Greens */
-  --green-d:   #1B4D2E;
-  --green:     #2D6A4F;
-  --green-m:   #40916C;
-  --green-l:   #74C69D;
-  --green-xl:  #D8F3DC;
+  --green-d:  #0F2E18;
+  --green:    #1A5C30;
+  --green-m:  #2D8A4E;
+  --green-l:  #5DC97E;
+  --lime:     #A8F5C0;
+  --amber:    #F59E0B;
+  --gold:     #FCD34D;
+  --red:      #EF4444;
 
-  /* Amber / Gold Accents */
-  --amber:     #D97706;
-  --amber-l:   #F59E0B;
-  --amber-xl:  #FEF3C7;
+  --tl:  rgba(255,255,255,0.96);
+  --td:  rgba(255,255,255,0.70);
+  --tm:  rgba(255,255,255,0.45);
 
-  /* Text */
-  --text:      #1A2E1D;
-  --text-2:    #3D5A44;
-  --muted:     #6B8070;
-  --muted-l:   #9AB5A0;
+  --font-d: 'Cormorant Garamond', Georgia, serif;
+  --font-b: 'Plus Jakarta Sans', sans-serif;
+  --font-m: 'JetBrains Mono', monospace;
 
-  /* Status */
-  --red:       #DC2626;
-  --red-l:     #FEE2E2;
-  --blue:      #1D4ED8;
-  --blue-l:    #DBEAFE;
-
-  /* Fonts */
-  --font-d:  'Merriweather', Georgia, serif;
-  --font-b:  'Plus Jakarta Sans', sans-serif;
-  --font-m:  'JetBrains Mono', monospace;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(27,77,46,0.08), 0 1px 2px rgba(27,77,46,0.04);
-  --shadow:    0 4px 16px rgba(27,77,46,0.10), 0 2px 6px rgba(27,77,46,0.06);
-  --shadow-lg: 0 12px 40px rgba(27,77,46,0.14), 0 4px 12px rgba(27,77,46,0.08);
+  --sh:    0 8px 32px rgba(0,0,0,0.25);
+  --sh-lg: 0 20px 60px rgba(0,0,0,0.40);
+  --blur:  blur(20px);
+  --blurs: blur(10px);
 }
 
+html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
   font-family: var(--font-b);
-  color: var(--text);
+  color: var(--tl);
+  min-height: 100vh;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: var(--green-l); border-radius: 3px; }
+/* ─── Full-Page Video Background ─────────────── */
+#cinematic-bg {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  background: #060f08;
+}
+#cinematic-bg video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 40%;
+}
 
-/* ── Animations ─────────────────────────────── */
+/* CSS Animated Scene — golden-hour Kenyan farm (always shown as fallback / blended behind video) */
+#cinematic-bg .scene {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 55% at 72% 88%,  rgba(217,119,6,0.60) 0%,  transparent 62%),
+    radial-gradient(ellipse 70% 60% at 18% 78%,  rgba(15,80,35,0.75)  0%,  transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 55%,  rgba(8,40,20,0.80)   0%,  transparent 55%),
+    linear-gradient(175deg,
+      #050e07 0%, #091808 15%, #102214 35%,
+      #173820 52%, #1d5228 65%,
+      #6b3510 80%, #b85c08 90%, #e8890a 100%);
+  animation: sceneShift 22s ease-in-out infinite alternate;
+}
+@keyframes sceneShift {
+  0%   { filter: brightness(1.00) saturate(1.10); }
+  40%  { filter: brightness(1.18) saturate(1.35) hue-rotate(6deg); }
+  70%  { filter: brightness(0.88) saturate(1.05) hue-rotate(-4deg); }
+  100% { filter: brightness(1.06) saturate(1.20); }
+}
+
+#cinematic-bg .sun {
+  position: absolute; bottom: 20%; right: 18%;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,215,60,0.70) 0%, rgba(255,140,0,0.35) 38%, transparent 68%);
+  filter: blur(22px);
+  animation: sunPulse 7s ease-in-out infinite;
+}
+@keyframes sunPulse {
+  0%,100%{ transform:scale(1);   opacity:0.80; }
+  50%    { transform:scale(1.22); opacity:1.00; }
+}
+
+#cinematic-bg .rays {
+  position: absolute; inset: 0;
+  background: conic-gradient(
+    from 190deg at 80% 85%,
+    transparent 0deg,
+    rgba(255,215,80,0.06) 4deg, transparent 9deg,
+    rgba(255,215,80,0.05) 16deg, transparent 21deg,
+    rgba(255,215,80,0.07) 29deg, transparent 35deg,
+    rgba(255,215,80,0.05) 45deg, transparent 52deg
+  );
+  animation: raysRotate 35s linear infinite;
+}
+@keyframes raysRotate { to { transform: rotate(5deg) scale(1.04); } }
+
+#cinematic-bg .hills {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 48%;
+  background:
+    radial-gradient(ellipse 80% 110% at 10% 100%, #071009 52%, transparent 53%),
+    radial-gradient(ellipse 60% 95%  at 35% 100%, #091508 52%, transparent 53%),
+    radial-gradient(ellipse 65% 90%  at 60% 100%, #0a1a0b 52%, transparent 53%),
+    radial-gradient(ellipse 55% 85%  at 82% 100%, #071009 52%, transparent 53%),
+    radial-gradient(ellipse 48% 80%  at 100% 100%,#081208 52%, transparent 53%);
+  animation: hillsWave 25s ease-in-out infinite alternate;
+}
+@keyframes hillsWave {
+  0%  { transform: translateY(0px); }
+  100%{ transform: translateY(-8px) scaleX(1.012); }
+}
+
+/* Maize rows in foreground */
+#cinematic-bg .field-rows {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 22%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(8,35,12,0.90) 0px, rgba(8,35,12,0.90) 18px,
+    rgba(12,50,18,0.70) 18px, rgba(12,50,18,0.70) 34px
+  );
+  mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%);
+}
+
+/* Floating pollen particles */
+#cinematic-bg .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+#cinematic-bg .p {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,220,90,0.60);
+  animation: pfloat linear infinite;
+}
+@keyframes pfloat {
+  0%   { transform:translateY(105vh) translateX(0px)   scale(0.6); opacity:0; }
+  8%   { opacity:0.9; }
+  88%  { opacity:0.6; }
+  100% { transform:translateY(-12vh)  translateX(50px)  scale(1.3); opacity:0; }
+}
+
+/* Cinematic vignette overlay */
+#cinematic-bg .vignette {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 110% 110% at 50% 50%, transparent 25%, rgba(0,0,0,0.42) 100%),
+    linear-gradient(to bottom,
+      rgba(0,0,0,0.48) 0%,
+      rgba(0,0,0,0.10) 25%,
+      rgba(0,0,0,0.05) 55%,
+      rgba(0,0,0,0.60) 100%
+    );
+}
+
+/* Film grain */
+#cinematic-bg .grain {
+  position: absolute; inset: 0;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+}
+
+/* ─── Glassmorphism Helpers ───────────────────── */
+.glass {
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: var(--gb);
+  border-radius: 20px;
+  box-shadow: var(--sh);
+}
+.glass-dark {
+  background: rgba(5,18,8,0.68);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: var(--gb-s);
+  border-radius: 20px;
+  box-shadow: var(--sh);
+}
+.glass-white {
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: var(--blurs);
+  -webkit-backdrop-filter: var(--blurs);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 20px;
+  box-shadow: var(--sh-lg);
+  color: #0F2E18;
+}
+
+/* ─── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.22); border-radius: 2px; }
+
+/* ─── Animations ──────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes spin       { to { transform: rotate(360deg); } }
-@keyframes float      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
-@keyframes pulse-dot  { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:.6} }
-@keyframes shimmer-bg {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
-}
-@keyframes heroZoom {
-  from { transform: scale(1.06); }
-  to   { transform: scale(1); }
-}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes spin   { to{transform:rotate(360deg)} }
+@keyframes float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+@keyframes pdot   { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.4} }
+@keyframes heroKB { from{transform:scale(1.09) translateY(4px)} to{transform:scale(1) translateY(0)} }
 
-.fade-up  { animation: fadeUp  0.5s ease forwards; }
-.fade-in  { animation: fadeIn  0.4s ease forwards; }
-.spin     { animation: spin 1s linear infinite; display: inline-block; }
-.float    { animation: float 3.5s ease-in-out infinite; }
+.fade-up { animation: fadeUp 0.55s cubic-bezier(.22,1,.36,1) forwards; }
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+.spin    { animation: spin 1s linear infinite; display:inline-block; }
+.float   { animation: float 3.5s ease-in-out infinite; }
