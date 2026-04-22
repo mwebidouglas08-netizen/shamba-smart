@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCrops } from '../api.js';
+import { getCrops } from '../api.jsx';
 
 const MONTH_MAP = {
   'Maize':[2,3,4,9,10,11], 'Beans':[2,3,4,9,10], 'Tomatoes':[0,1,2,3,4,5,6,7,8,9,10,11],

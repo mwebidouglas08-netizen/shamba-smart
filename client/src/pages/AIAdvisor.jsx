@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { askAdvisor } from '../api.js';
+import { askAdvisor } from '../api.jsx';
 
 const QUICK = [
   'Control Fall Armyworm organically?',

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getMarket } from '../api.js';
+import { getMarket } from '../api.jsx';
 
 export default function MarketPrices() {
   const [market, setMarket] = useState([]);
