@@ -1,0 +1,21 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --soil: #1A0D00; --earth: #3D1F00; --amber: #D97706; --gold: #F59E0B;
+  --wheat: #FDE68A; --cream: #FFFBF0; --green: #16A34A; --lime: #4ADE80;
+  --red: #DC2626; --surface: #2A1500; --card: #321A04;
+  --border: rgba(217,119,6,0.18); --text: #FEF3C7; --muted: #A78B5F;
+  --font-d: 'Playfair Display', Georgia, serif;
+  --font-b: 'DM Sans', sans-serif;
+  --font-m: 'DM Mono', monospace;
+}
+body { background: var(--soil); font-family: var(--font-b); color: var(--text); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--earth); }
+::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+.fade-up { animation: fadeUp 0.45s ease forwards; }
+.spin { animation: spin 1s linear infinite; display:inline-block; }
+.float { animation: float 3s ease-in-out infinite; }
