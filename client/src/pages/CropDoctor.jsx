@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { diagnose } from '../api.js';
+import { diagnose } from '../api.jsx';
 
 const CROPS = ['Maize','Beans','Tomatoes','Kale/Sukuma','Potatoes','Avocado','Sweet Potato','Sorghum','Cabbage','Cassava','Banana'];
 const SYMPTOMS = [
