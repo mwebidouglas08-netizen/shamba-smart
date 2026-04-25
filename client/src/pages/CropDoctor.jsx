@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { diagnose } from '../api.jsx';
+import { diagnose } from '../api.js';
 
 const CROPS = [
   'Maize','Beans','Tomatoes','Kale/Sukuma','Potatoes',
   'Avocado','Sweet Potato','Sorghum','Cabbage','Cassava','Banana',
 ];
+
 const SYMPTOMS = [
   'yellowing leaves','stunted growth','holes in leaves','brown spots','wilting',
   'white powder','orange pustules','rotting stem base','water-soaked spots','leaf curl',
@@ -71,7 +72,6 @@ export default function CropDoctor() {
       const { reply } = await diagnose(crop, symptoms, description);
       setResult(reply);
     } catch (err) {
-      // Show the actual error returned by the server, not a generic message
       setError(err.message || 'Something went wrong. Please try again.');
     }
     setLoading(false);
@@ -82,7 +82,7 @@ export default function CropDoctor() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
 
-      {/* ── HERO IMAGE ─────────────────────────────────────── */}
+      {/* Hero image */}
       <div style={{ margin: '0 -16px', position: 'relative', height: 160, overflow: 'hidden' }}>
         <img
           src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=1400&q=90&fit=crop&auto=format"
@@ -106,7 +106,7 @@ export default function CropDoctor() {
         </div>
       </div>
 
-      {/* ── STEP 1 — Crop ─────────────────────────────────── */}
+      {/* Step 1 — Crop */}
       <div className="card fade-up" style={{ padding: 20 }}>
         <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--blue-700)', marginBottom: 13 }}>
           Step 1 — Which crop is affected?
@@ -114,9 +114,9 @@ export default function CropDoctor() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {CROPS.map(c => (
             <button key={c} onClick={() => setCrop(c)} style={{
-              background:  crop === c ? 'var(--blue-600)' : 'var(--blue-50)',
-              color:       crop === c ? '#fff' : 'var(--blue-700)',
-              border:      `1.5px solid ${crop === c ? 'var(--blue-600)' : 'var(--blue-200)'}`,
+              background:   crop === c ? 'var(--blue-600)' : 'var(--blue-50)',
+              color:        crop === c ? '#fff' : 'var(--blue-700)',
+              border:       `1.5px solid ${crop === c ? 'var(--blue-600)' : 'var(--blue-200)'}`,
               borderRadius: 10, padding: '8px 15px', cursor: 'pointer',
               fontSize: 13.5, fontWeight: crop === c ? 700 : 500,
               fontFamily: 'var(--font-b)', transition: 'all 0.18s',
@@ -128,7 +128,7 @@ export default function CropDoctor() {
         </div>
       </div>
 
-      {/* ── STEP 2 — Symptoms ─────────────────────────────── */}
+      {/* Step 2 — Symptoms */}
       <div className="card fade-up" style={{ padding: 20 }}>
         <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--blue-700)', marginBottom: 13 }}>
           Step 2 — Select visible symptoms (pick all that apply)
@@ -136,9 +136,9 @@ export default function CropDoctor() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {SYMPTOMS.map(s => (
             <span key={s} onClick={() => toggle(s)} style={{
-              background:   symptoms.includes(s) ? '#fef2f2'        : 'var(--gray-100)',
+              background:   symptoms.includes(s) ? '#fef2f2' : 'var(--gray-100)',
               border:       `1.5px solid ${symptoms.includes(s) ? 'var(--red)' : 'var(--border)'}`,
-              color:        symptoms.includes(s) ? 'var(--red)'     : 'var(--text-2)',
+              color:        symptoms.includes(s) ? 'var(--red)' : 'var(--text-2)',
               borderRadius: 999, padding: '6px 13px', fontSize: 12.5, fontWeight: 600,
               cursor: 'pointer', transition: 'all 0.18s',
             }}>
@@ -153,7 +153,7 @@ export default function CropDoctor() {
         )}
       </div>
 
-      {/* ── STEP 3 — Description ──────────────────────────── */}
+      {/* Step 3 — Description */}
       <div className="card fade-up" style={{ padding: 20 }}>
         <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--blue-700)', marginBottom: 11 }}>
           Step 3 — Additional details (optional)
@@ -162,7 +162,7 @@ export default function CropDoctor() {
           value={description}
           onChange={e => setDescription(e.target.value)}
           rows={3}
-          placeholder="When did symptoms start? How fast are they spreading? Recent weather? Chemicals used?"
+          placeholder="When did symptoms start? How fast spreading? Recent weather? Chemicals used?"
           style={{
             width: '100%', background: 'var(--gray-50)',
             border: '1.5px solid var(--border)', borderRadius: 10,
@@ -175,27 +175,20 @@ export default function CropDoctor() {
         />
       </div>
 
-      {/* ── DIAGNOSE BUTTON ───────────────────────────────── */}
-      <button
-        onClick={run}
-        disabled={!canSubmit}
-        style={{
-          background: 'linear-gradient(135deg, #dc2626, #ef4444)',
-          color: '#fff', border: 'none', borderRadius: 14,
-          padding: '15px', fontSize: 15.5, fontWeight: 700, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
-          boxShadow: '0 6px 20px rgba(220,38,38,0.30)',
-          opacity: !canSubmit ? 0.45 : 1,
-          transition: 'all 0.2s',
-        }}
-      >
-        {loading
-          ? <><span className="spin">↻</span> Analyzing symptoms...</>
-          : '🔬 Diagnose My Crop'
-        }
+      {/* Diagnose button */}
+      <button onClick={run} disabled={!canSubmit} style={{
+        background: 'linear-gradient(135deg, #dc2626, #ef4444)',
+        color: '#fff', border: 'none', borderRadius: 14,
+        padding: '15px', fontSize: 15.5, fontWeight: 700, cursor: 'pointer',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
+        boxShadow: '0 6px 20px rgba(220,38,38,0.30)',
+        opacity: !canSubmit ? 0.45 : 1,
+        transition: 'all 0.2s',
+      }}>
+        {loading ? <><span className="spin">↻</span> Analyzing symptoms...</> : '🔬 Diagnose My Crop'}
       </button>
 
-      {/* ── ERROR MESSAGE ─────────────────────────────────── */}
+      {/* Error */}
       {error && (
         <div style={{
           background: '#fef2f2', border: '1.5px solid #fecaca',
@@ -204,33 +197,28 @@ export default function CropDoctor() {
         }}>
           <span style={{ fontSize: 22, flexShrink: 0 }}>⚠️</span>
           <div>
-            <div style={{ fontWeight: 700, color: '#dc2626', fontSize: 14, marginBottom: 4 }}>
-              Diagnosis Failed
-            </div>
+            <div style={{ fontWeight: 700, color: '#dc2626', fontSize: 14, marginBottom: 4 }}>Diagnosis Failed</div>
             <div style={{ fontSize: 13.5, color: '#7f1d1d', lineHeight: 1.6 }}>{error}</div>
             <div style={{ fontSize: 12.5, color: '#9f3a3a', marginTop: 8 }}>
-              Make sure <strong>ANTHROPIC_API_KEY</strong> is set in your Railway environment variables, then redeploy.
+              Ensure <strong>ANTHROPIC_API_KEY</strong> is set in your Railway environment variables.
             </div>
           </div>
         </div>
       )}
 
-      {/* ── RESULT ───────────────────────────────────────── */}
+      {/* Result */}
       {result && (
         <div className="card fade-up" style={{ padding: 22, borderLeft: '4px solid var(--blue-500)', borderTop: '2px solid var(--blue-200)' }}>
           <div style={{ fontSize: 15.5, fontWeight: 700, color: 'var(--blue-800)', marginBottom: 14 }}>
             📋 Diagnosis Report
           </div>
           <FormatResult text={result} />
-          <button
-            onClick={reset}
-            style={{
-              marginTop: 18, width: '100%', background: 'var(--gray-100)',
-              color: 'var(--text-2)', border: '1px solid var(--border)',
-              borderRadius: 10, padding: '11px', cursor: 'pointer',
-              fontFamily: 'var(--font-b)', fontSize: 13.5, fontWeight: 600,
-              transition: 'background 0.2s',
-            }}
+          <button onClick={reset} style={{
+            marginTop: 18, width: '100%', background: 'var(--gray-100)',
+            color: 'var(--text-2)', border: '1px solid var(--border)',
+            borderRadius: 10, padding: '11px', cursor: 'pointer',
+            fontFamily: 'var(--font-b)', fontSize: 13.5, fontWeight: 600, transition: 'background 0.2s',
+          }}
             onMouseEnter={e => e.target.style.background = 'var(--blue-50)'}
             onMouseLeave={e => e.target.style.background = 'var(--gray-100)'}
           >
