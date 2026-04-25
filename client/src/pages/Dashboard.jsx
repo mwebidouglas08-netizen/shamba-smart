@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getMarket } from '../api.js';
+import { getMarket } from '../api.jsx';
 
 const getSeason = () => {
   const m = new Date().getMonth();
